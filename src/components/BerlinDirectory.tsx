@@ -28,8 +28,8 @@ export default function BerlinDirectory() {
   ];
 
   const berlinerLinks: LinkItem[] = [
-    { title: "Service 1", description: "Coming soon" },
-    { title: "Service 2", description: "Coming soon" },
+    { title: "Unemployment", description: "Where to go for monetary support" },
+    { title: "Gender Violence and Divorce", description: "Support for finding a safe home." },
     { title: "Service 3", description: "Coming soon" },
     { title: "Service 4", description: "Coming soon" },
     { title: "Service 5", description: "Coming soon" }
