@@ -3,9 +3,9 @@
 import { useState } from "react";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
-import { ArrowLeft, ExternalLink } from "lucide-react";
+import { ArrowLeft, ExternalLink, CheckCircle2 } from "lucide-react";
 
-type DirectorySection = "main" | "new-here" | "berliner";
+type DirectorySection = "main" | "new-here" | "berliner" | "house-registration";
 
 interface LinkItem {
   title: string;
@@ -18,7 +18,11 @@ export default function BerlinDirectory() {
 
   const newHereLinks: LinkItem[] = [
     { title: "Immigration", description: "Immigration services and information" },
-    { title: "House Registration", description: "Residential registration (Anmeldung)" },
+    { 
+      title: "House Registration", 
+      description: "Residential registration (Anmeldung)",
+      url: "house-registration-checklist"
+    },
     { title: "Health Insurance", description: "Health insurance providers and guidance" },
     { title: "Tax Registration", description: "Tax number and registration services" }
   ];
@@ -32,7 +36,9 @@ export default function BerlinDirectory() {
   ];
 
   const handleLinkClick = (link: LinkItem) => {
-    if (link.url) {
+    if (link.url === "house-registration-checklist") {
+      setCurrentSection("house-registration");
+    } else if (link.url) {
       window.open(link.url, "_blank", "noopener,noreferrer");
     }
   };
@@ -122,11 +128,84 @@ export default function BerlinDirectory() {
     </div>
   );
 
+  const renderHouseRegistrationChecklist = () => (
+    <div className="space-y-6">
+      <div className="flex items-center space-x-4">
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => setCurrentSection("new-here")}
+          className="flex items-center space-x-2"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          <span>Back</span>
+        </Button>
+      </div>
+
+      <div className="text-center space-y-2">
+        <h1 className="text-2xl font-bold tracking-tight">House Registration Requirements</h1>
+        <p className="text-sm text-muted-foreground">Checklist for online registration (Anmeldung)</p>
+      </div>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-lg">Required Items</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="flex items-start space-x-3">
+            <CheckCircle2 className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0" />
+            <div>
+              <p className="font-medium">Identification Document</p>
+              <p className="text-sm text-muted-foreground mt-1">
+                An identification document with activated online ID and the associated PIN.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-start space-x-3">
+            <CheckCircle2 className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0" />
+            <div>
+              <p className="font-medium">NFC-enabled Device</p>
+              <p className="text-sm text-muted-foreground mt-1">
+                A suitable smartphone with NFC interface or a card reader. The free ID App of the Federal Government for the smartphone or PC.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-start space-x-3">
+            <CheckCircle2 className="h-5 w-5 text-green-600 mt-0.5 flex-shrink-0" />
+            <div>
+              <p className="font-medium">User Account</p>
+              <p className="text-sm text-muted-foreground mt-1">
+                A user account, for example, the BundID.
+              </p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card className="bg-blue-50 border-blue-200">
+        <CardContent className="p-4">
+          <h3 className="font-medium text-blue-900 mb-2">Need Help?</h3>
+          <div className="space-y-2 text-sm">
+            <p className="text-blue-800">
+              Don&apos;t have the ID App? You can find the download options on the website of the ID App.
+            </p>
+            <p className="text-blue-800">
+              You don&apos;t have a user account yet? You can set up your BundID on the website of BundID.
+            </p>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+
   return (
     <div className="w-full max-w-md mx-auto py-8 px-4 min-h-screen">
       {currentSection === "main" && renderMainPage()}
       {currentSection === "new-here" && renderLinkSection("I'm new here", newHereLinks)}
       {currentSection === "berliner" && renderLinkSection("Berliner", berlinerLinks)}
+      {currentSection === "house-registration" && renderHouseRegistrationChecklist()}
     </div>
   );
 }
