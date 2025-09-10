@@ -3,9 +3,9 @@
 import { useState } from "react";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
-import { ArrowLeft, ExternalLink, CheckCircle2 } from "lucide-react";
+import { ArrowLeft, ExternalLink, CheckCircle2, Phone, Globe } from "lucide-react";
 
-type DirectorySection = "main" | "new-here" | "berliner" | "house-registration";
+type DirectorySection = "main" | "new-here" | "berliner" | "house-registration" | "gender-violence" | "short-term-funds";
 
 interface LinkItem {
   title: string;
@@ -29,15 +29,39 @@ export default function BerlinDirectory() {
 
   const berlinerLinks: LinkItem[] = [
     { title: "Unemployment", description: "Where to go for monetary support" },
-    { title: "Gender Violence and Divorce", description: "Support for finding a safe home." },
+    { 
+      title: "Gender Violence and Divorce", 
+      description: "Support for finding a safe home.",
+      url: "gender-violence"
+    },
     { title: "Service 3", description: "Coming soon" },
     { title: "Service 4", description: "Coming soon" },
     { title: "Service 5", description: "Coming soon" }
   ];
 
+  const genderViolenceLinks: LinkItem[] = [
+    { 
+      title: "Short term funds and housing", 
+      description: "Emergency financial assistance and temporary housing",
+      url: "short-term-funds"
+    }
+  ];
+
+  const shortTermFundsLinks: LinkItem[] = [
+    { 
+      title: "Frauenraum", 
+      description: "Support services for women",
+      url: "https://www.frauenraum.de/"
+    }
+  ];
+
   const handleLinkClick = (link: LinkItem) => {
     if (link.url === "house-registration-checklist") {
       setCurrentSection("house-registration");
+    } else if (link.url === "gender-violence") {
+      setCurrentSection("gender-violence");
+    } else if (link.url === "short-term-funds") {
+      setCurrentSection("short-term-funds");
     } else if (link.url) {
       window.open(link.url, "_blank", "noopener,noreferrer");
     }
@@ -84,19 +108,26 @@ export default function BerlinDirectory() {
     </div>
   );
 
-  const renderLinkSection = (title: string, links: LinkItem[]) => (
-    <div className="space-y-6">
-      <div className="flex items-center space-x-4">
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={() => setCurrentSection("main")}
-          className="flex items-center space-x-2"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          <span>Back</span>
-        </Button>
-      </div>
+  const renderLinkSection = (title: string, links: LinkItem[]) => {
+    const getBackSection = () => {
+      if (title === "Gender Violence and Divorce") return "berliner";
+      if (title === "I'm new here") return "main";
+      return "main";
+    };
+
+    return (
+      <div className="space-y-6">
+        <div className="flex items-center space-x-4">
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setCurrentSection(getBackSection() as DirectorySection)}
+            className="flex items-center space-x-2"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            <span>Back</span>
+          </Button>
+        </div>
 
       <div className="text-center space-y-2">
         <h1 className="text-2xl font-bold tracking-tight">{title}</h1>
@@ -125,6 +156,69 @@ export default function BerlinDirectory() {
           </Card>
         ))}
       </div>
+    </div>
+    );
+  };
+
+  const renderShortTermFunds = () => (
+    <div className="space-y-6">
+      <div className="flex items-center space-x-4">
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => setCurrentSection("gender-violence")}
+          className="flex items-center space-x-2"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          <span>Back</span>
+        </Button>
+      </div>
+
+      <div className="text-center space-y-2">
+        <h1 className="text-2xl font-bold tracking-tight">Short term funds and housing</h1>
+        <p className="text-sm text-muted-foreground">Emergency financial assistance and temporary housing resources</p>
+      </div>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-lg">Frauenraum</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Support services for women in difficult situations
+          </p>
+          
+          <div className="space-y-3">
+            <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
+              <Globe className="h-5 w-5 text-blue-600" />
+              <div className="flex-1">
+                <p className="font-medium">Website</p>
+                <a 
+                  href="https://www.frauenraum.de/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-sm text-blue-600 hover:underline"
+                >
+                  www.frauenraum.de
+                </a>
+              </div>
+            </div>
+            
+            <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
+              <Phone className="h-5 w-5 text-green-600" />
+              <div className="flex-1">
+                <p className="font-medium">Phone</p>
+                <a 
+                  href="tel:+493044845828"
+                  className="text-sm text-green-600 hover:underline"
+                >
+                  (030) 448 45 28
+                </a>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 
@@ -206,6 +300,8 @@ export default function BerlinDirectory() {
       {currentSection === "new-here" && renderLinkSection("I'm new here", newHereLinks)}
       {currentSection === "berliner" && renderLinkSection("Berliner", berlinerLinks)}
       {currentSection === "house-registration" && renderHouseRegistrationChecklist()}
+      {currentSection === "gender-violence" && renderLinkSection("Gender Violence and Divorce", genderViolenceLinks)}
+      {currentSection === "short-term-funds" && renderShortTermFunds()}
     </div>
   );
 }
