@@ -5,7 +5,7 @@ import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { ArrowLeft, ExternalLink, CheckCircle2, Phone, Globe } from "lucide-react";
 
-type DirectorySection = "main" | "new-here" | "berliner" | "house-registration" | "gender-violence" | "short-term-funds";
+type DirectorySection = "main" | "new-here" | "berliner" | "house-registration" | "gender-violence" | "short-term-funds" | "language-classes";
 
 interface LinkItem {
   title: string;
@@ -34,9 +34,13 @@ export default function BerlinDirectory() {
       description: "Support for finding a safe home.",
       url: "gender-violence"
     },
-    { title: "Service 3", description: "Coming soon" },
-    { title: "Service 4", description: "Coming soon" },
-    { title: "Service 5", description: "Coming soon" }
+    { 
+      title: "Language Classes", 
+      description: "German language learning opportunities",
+      url: "language-classes"
+    },
+    { title: "Communities", description: "Community groups and social connections" },
+    { title: "Family and Kids", description: "Services for families with children" }
   ];
 
   const genderViolenceLinks: LinkItem[] = [
@@ -55,6 +59,19 @@ export default function BerlinDirectory() {
     }
   ];
 
+  const languageClassesLinks: LinkItem[] = [
+    { 
+      title: "Offene Tur", 
+      description: "25 Euro per month",
+      url: "https://offenetuer.net/de"
+    },
+    { 
+      title: "KUB", 
+      description: "Free",
+      url: "https://kub-berlin.org/en/"
+    }
+  ];
+
   const handleLinkClick = (link: LinkItem) => {
     if (link.url === "house-registration-checklist") {
       setCurrentSection("house-registration");
@@ -62,6 +79,8 @@ export default function BerlinDirectory() {
       setCurrentSection("gender-violence");
     } else if (link.url === "short-term-funds") {
       setCurrentSection("short-term-funds");
+    } else if (link.url === "language-classes") {
+      setCurrentSection("language-classes");
     } else if (link.url) {
       window.open(link.url, "_blank", "noopener,noreferrer");
     }
@@ -77,20 +96,6 @@ export default function BerlinDirectory() {
       </div>
       
       <div className="space-y-4">
-        <Card className="cursor-pointer hover:bg-accent transition-colors" onClick={() => setCurrentSection("new-here")}>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <h2 className="text-xl font-semibold">I&apos;m new here</h2>
-                <p className="text-muted-foreground mt-1">
-                  Essential services for newcomers to Berlin
-                </p>
-              </div>
-              <ExternalLink className="h-5 w-5 text-muted-foreground" />
-            </div>
-          </CardContent>
-        </Card>
-
         <Card className="cursor-pointer hover:bg-accent transition-colors" onClick={() => setCurrentSection("berliner")}>
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
@@ -98,6 +103,20 @@ export default function BerlinDirectory() {
                 <h2 className="text-xl font-semibold">Berliner</h2>
                 <p className="text-muted-foreground mt-1">
                   Services and resources for Berlin residents
+                </p>
+              </div>
+              <ExternalLink className="h-5 w-5 text-muted-foreground" />
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="cursor-pointer hover:bg-accent transition-colors" onClick={() => setCurrentSection("new-here")}>
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="text-xl font-semibold">I&apos;m new here</h2>
+                <p className="text-muted-foreground mt-1">
+                  Essential services for newcomers to Berlin
                 </p>
               </div>
               <ExternalLink className="h-5 w-5 text-muted-foreground" />
@@ -219,6 +238,152 @@ export default function BerlinDirectory() {
           </div>
         </CardContent>
       </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-lg">Bora E.v</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Women&apos;s projects and support services
+          </p>
+          
+          <div className="space-y-3">
+            <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
+              <Globe className="h-5 w-5 text-blue-600" />
+              <div className="flex-1">
+                <p className="font-medium">Website</p>
+                <a 
+                  href="https://www.frauenprojekte-bora.de/en/mainpage/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-sm text-blue-600 hover:underline"
+                >
+                  www.frauenprojekte-bora.de
+                </a>
+              </div>
+            </div>
+            
+            <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
+              <Phone className="h-5 w-5 text-green-600" />
+              <div className="flex-1">
+                <p className="font-medium">Phone</p>
+                <a 
+                  href="tel:+49306110300"
+                  className="text-sm text-green-600 hover:underline"
+                >
+                  030 6110300
+                </a>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-lg">Marie Frauenzentrum</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Women&apos;s center providing support and services
+          </p>
+          
+          <div className="space-y-3">
+            <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
+              <Globe className="h-5 w-5 text-blue-600" />
+              <div className="flex-1">
+                <p className="font-medium">Website</p>
+                <a 
+                  href="https://frauenzentrum-marie.de/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-sm text-blue-600 hover:underline"
+                >
+                  frauenzentrum-marie.de
+                </a>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+
+  const renderLanguageClasses = () => (
+    <div className="space-y-6">
+      <div className="flex items-center space-x-4">
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => setCurrentSection("berliner")}
+          className="flex items-center space-x-2"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          <span>Back</span>
+        </Button>
+      </div>
+
+      <div className="text-center space-y-2">
+        <h1 className="text-2xl font-bold tracking-tight">Language Classes</h1>
+        <p className="text-sm text-muted-foreground">German language learning opportunities</p>
+      </div>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-lg">Offene Tur</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            German language classes - 25 Euro per month
+          </p>
+          
+          <div className="space-y-3">
+            <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
+              <Globe className="h-5 w-5 text-blue-600" />
+              <div className="flex-1">
+                <p className="font-medium">Website</p>
+                <a 
+                  href="https://offenetuer.net/de" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-sm text-blue-600 hover:underline"
+                >
+                  offenetuer.net/de
+                </a>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-lg">KUB</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Free German language classes
+          </p>
+          
+          <div className="space-y-3">
+            <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
+              <Globe className="h-5 w-5 text-blue-600" />
+              <div className="flex-1">
+                <p className="font-medium">Website</p>
+                <a 
+                  href="https://kub-berlin.org/en/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-sm text-blue-600 hover:underline"
+                >
+                  kub-berlin.org/en
+                </a>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 
@@ -302,6 +467,7 @@ export default function BerlinDirectory() {
       {currentSection === "house-registration" && renderHouseRegistrationChecklist()}
       {currentSection === "gender-violence" && renderLinkSection("Gender Violence and Divorce", genderViolenceLinks)}
       {currentSection === "short-term-funds" && renderShortTermFunds()}
+      {currentSection === "language-classes" && renderLanguageClasses()}
     </div>
   );
 }
