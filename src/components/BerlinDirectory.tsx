@@ -3,9 +3,9 @@
 import { useState } from "react";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
-import { ArrowLeft, ExternalLink, CheckCircle2, Phone, Globe } from "lucide-react";
+import { ArrowLeft, ExternalLink, CheckCircle2, Phone, Globe, Users, Heart, Palette } from "lucide-react";
 
-type DirectorySection = "main" | "new-here" | "berliner" | "house-registration" | "gender-violence" | "short-term-funds" | "language-classes";
+type DirectorySection = "main" | "new-here" | "berliner" | "house-registration" | "gender-violence" | "short-term-funds" | "language-classes" | "communities" | "sports" | "parenthood" | "arts-culture";
 
 interface LinkItem {
   title: string;
@@ -31,7 +31,7 @@ export default function BerlinDirectory() {
     { title: "Unemployment", description: "Where to go for monetary support" },
     { 
       title: "Gender Violence and Divorce", 
-      description: "Support for finding a safe home.",
+      description: "Support for finding a safe home",
       url: "gender-violence"
     },
     { 
@@ -39,7 +39,11 @@ export default function BerlinDirectory() {
       description: "German language learning opportunities",
       url: "language-classes"
     },
-    { title: "Communities", description: "Community groups and social connections" },
+    { 
+      title: "Communities", 
+      description: "Community groups and social connections",
+      url: "communities"
+    },
     { title: "Family and Kids", description: "Services for families with children" }
   ];
 
@@ -72,6 +76,24 @@ export default function BerlinDirectory() {
     }
   ];
 
+  const communitiesLinks: LinkItem[] = [
+    { 
+      title: "Sports", 
+      description: "Sports clubs and athletic communities",
+      url: "sports"
+    },
+    { 
+      title: "Parenthood", 
+      description: "Parenting groups and family support",
+      url: "parenthood"
+    },
+    { 
+      title: "Arts and Culture", 
+      description: "Cultural groups and artistic communities",
+      url: "arts-culture"
+    }
+  ];
+
   const handleLinkClick = (link: LinkItem) => {
     if (link.url === "house-registration-checklist") {
       setCurrentSection("house-registration");
@@ -81,6 +103,14 @@ export default function BerlinDirectory() {
       setCurrentSection("short-term-funds");
     } else if (link.url === "language-classes") {
       setCurrentSection("language-classes");
+    } else if (link.url === "communities") {
+      setCurrentSection("communities");
+    } else if (link.url === "sports") {
+      setCurrentSection("sports");
+    } else if (link.url === "parenthood") {
+      setCurrentSection("parenthood");
+    } else if (link.url === "arts-culture") {
+      setCurrentSection("arts-culture");
     } else if (link.url) {
       window.open(link.url, "_blank", "noopener,noreferrer");
     }
@@ -459,6 +489,156 @@ export default function BerlinDirectory() {
     </div>
   );
 
+  const renderCommunities = () => (
+    <div className="space-y-6">
+      <div className="flex items-center space-x-4">
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => setCurrentSection("berliner")}
+          className="flex items-center space-x-2"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          <span>Back</span>
+        </Button>
+      </div>
+
+      <div className="text-center space-y-2">
+        <h1 className="text-2xl font-bold tracking-tight">Communities</h1>
+        <p className="text-sm text-muted-foreground">Connect with community groups and social networks</p>
+      </div>
+
+      <div className="space-y-3">
+        {communitiesLinks.map((link, index) => (
+          <Card 
+            key={index} 
+            className="cursor-pointer hover:bg-accent transition-colors"
+            onClick={() => handleLinkClick(link)}
+          >
+            <CardContent className="p-4">
+              <div className="flex items-center space-x-4">
+                <div className="flex-shrink-0">
+                  {link.title === "Sports" && <Users className="h-6 w-6 text-blue-600" />}
+                  {link.title === "Parenthood" && <Heart className="h-6 w-6 text-pink-600" />}
+                  {link.title === "Arts and Culture" && <Palette className="h-6 w-6 text-purple-600" />}
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-medium">{link.title}</h3>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    {link.description}
+                  </p>
+                </div>
+                <ExternalLink className="h-4 w-4 text-muted-foreground" />
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </div>
+  );
+
+  const renderSports = () => (
+    <div className="space-y-6">
+      <div className="flex items-center space-x-4">
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => setCurrentSection("communities")}
+          className="flex items-center space-x-2"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          <span>Back</span>
+        </Button>
+      </div>
+
+      <div className="text-center space-y-2">
+        <div className="flex items-center justify-center space-x-3">
+          <Users className="h-8 w-8 text-blue-600" />
+          <h1 className="text-2xl font-bold tracking-tight">Sports</h1>
+        </div>
+        <p className="text-sm text-muted-foreground">Sports clubs and athletic communities in Berlin</p>
+      </div>
+
+      <Card className="bg-blue-50 border-blue-200">
+        <CardContent className="p-6 text-center">
+          <Users className="h-12 w-12 text-blue-600 mx-auto mb-4" />
+          <h3 className="font-medium text-blue-900 mb-2">Sports Communities</h3>
+          <p className="text-sm text-blue-800">
+            Connect with local sports clubs and athletic groups to stay active and meet new people in Berlin.
+          </p>
+        </CardContent>
+      </Card>
+    </div>
+  );
+
+  const renderParenthood = () => (
+    <div className="space-y-6">
+      <div className="flex items-center space-x-4">
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => setCurrentSection("communities")}
+          className="flex items-center space-x-2"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          <span>Back</span>
+        </Button>
+      </div>
+
+      <div className="text-center space-y-2">
+        <div className="flex items-center justify-center space-x-3">
+          <Heart className="h-8 w-8 text-pink-600" />
+          <h1 className="text-2xl font-bold tracking-tight">Parenthood</h1>
+        </div>
+        <p className="text-sm text-muted-foreground">Parenting groups and family support networks</p>
+      </div>
+
+      <Card className="bg-pink-50 border-pink-200">
+        <CardContent className="p-6 text-center">
+          <Heart className="h-12 w-12 text-pink-600 mx-auto mb-4" />
+          <h3 className="font-medium text-pink-900 mb-2">Parenting Support</h3>
+          <p className="text-sm text-pink-800">
+            Find parenting groups, family activities, and support networks for parents in Berlin.
+          </p>
+        </CardContent>
+      </Card>
+    </div>
+  );
+
+  const renderArtsCulture = () => (
+    <div className="space-y-6">
+      <div className="flex items-center space-x-4">
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => setCurrentSection("communities")}
+          className="flex items-center space-x-2"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          <span>Back</span>
+        </Button>
+      </div>
+
+      <div className="text-center space-y-2">
+        <div className="flex items-center justify-center space-x-3">
+          <Palette className="h-8 w-8 text-purple-600" />
+          <h1 className="text-2xl font-bold tracking-tight">Arts and Culture</h1>
+        </div>
+        <p className="text-sm text-muted-foreground">Cultural groups and artistic communities</p>
+      </div>
+
+      <Card className="bg-purple-50 border-purple-200">
+        <CardContent className="p-6 text-center">
+          <Palette className="h-12 w-12 text-purple-600 mx-auto mb-4" />
+          <h3 className="font-medium text-purple-900 mb-2">Arts & Culture</h3>
+          <p className="text-sm text-purple-800">
+            Discover Berlin&apos;s vibrant arts scene and connect with creative communities and cultural groups.
+          </p>
+        </CardContent>
+      </Card>
+    </div>
+  );
+
   return (
     <div className="w-full max-w-md mx-auto py-8 px-4 min-h-screen">
       {currentSection === "main" && renderMainPage()}
@@ -468,6 +648,10 @@ export default function BerlinDirectory() {
       {currentSection === "gender-violence" && renderLinkSection("Gender Violence and Divorce", genderViolenceLinks)}
       {currentSection === "short-term-funds" && renderShortTermFunds()}
       {currentSection === "language-classes" && renderLanguageClasses()}
+      {currentSection === "communities" && renderCommunities()}
+      {currentSection === "sports" && renderSports()}
+      {currentSection === "parenthood" && renderParenthood()}
+      {currentSection === "arts-culture" && renderArtsCulture()}
     </div>
   );
 }
