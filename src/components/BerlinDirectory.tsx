@@ -5,7 +5,7 @@ import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { ArrowLeft, ExternalLink, CheckCircle2, Phone, Globe, Users, Heart, Palette } from "lucide-react";
 
-type DirectorySection = "main" | "new-here" | "berliner" | "house-registration" | "gender-violence" | "short-term-funds" | "language-classes" | "communities" | "sports" | "parenthood" | "arts-culture";
+type DirectorySection = "main" | "new-here" | "berliner" | "house-registration" | "gender-violence" | "short-term-funds" | "language-classes" | "communities" | "sports" | "parenthood" | "arts-culture" | "family-kids" | "unemployment";
 
 interface LinkItem {
   title: string;
@@ -18,33 +18,55 @@ export default function BerlinDirectory() {
 
   const newHereLinks: LinkItem[] = [
     { title: "Immigration", description: "Immigration services and information" },
-    { 
-      title: "House Registration", 
+    {
+      title: "House Registration",
       description: "Residential registration (Anmeldung)",
       url: "house-registration-checklist"
     },
-    { title: "Health Insurance", description: "Health insurance providers and guidance" },
-    { title: "Tax Registration", description: "Tax number and registration services" }
+    {
+      title: "Health Insurance",
+      description: "Health insurance providers and guidance",
+      url: "https://allaboutberlin.com/guides/german-health-insurance"
+    },
+    { title: "Tax Registration", description: "Tax number and registration services" },
+    {
+      title: "Startup grants",
+      description: "Funding opportunities for startups",
+      url: "https://www.ibbventures.de/de/news/impact-funding-map"
+    },
+    {
+      title: "Co-tasker",
+      description: "Task and service marketplace",
+      url: "https://www.co-tasker.com/"
+    }
   ];
 
   const berlinerLinks: LinkItem[] = [
-    { title: "Unemployment", description: "Where to go for monetary support" },
-    { 
-      title: "Gender Violence and Divorce", 
+    {
+      title: "Unemployment",
+      description: "Where to go for monetary support",
+      url: "unemployment"
+    },
+    {
+      title: "Gender Violence and Divorce",
       description: "Support for finding a safe home",
       url: "gender-violence"
     },
-    { 
-      title: "Language Classes", 
+    {
+      title: "Language Classes",
       description: "German language learning opportunities",
       url: "language-classes"
     },
-    { 
-      title: "Communities", 
+    {
+      title: "Communities",
       description: "Community groups and social connections",
       url: "communities"
     },
-    { title: "Family and Kids", description: "Services for families with children" }
+    {
+      title: "Family and Kids",
+      description: "Services for families with children",
+      url: "family-kids"
+    }
   ];
 
   const genderViolenceLinks: LinkItem[] = [
@@ -77,20 +99,41 @@ export default function BerlinDirectory() {
   ];
 
   const communitiesLinks: LinkItem[] = [
-    { 
-      title: "Sports", 
+    {
+      title: "Sports",
       description: "Sports clubs and athletic communities",
       url: "sports"
     },
-    { 
-      title: "Parenthood", 
+    {
+      title: "Parenthood",
       description: "Parenting groups and family support",
       url: "parenthood"
     },
-    { 
-      title: "Arts and Culture", 
+    {
+      title: "Arts and Culture",
       description: "Cultural groups and artistic communities",
       url: "arts-culture"
+    }
+  ];
+
+  const familyKidsLinks: LinkItem[] = [
+    {
+      title: "Himbeer Magazine weekly activity guide",
+      description: "Weekly activities and events for families",
+      url: "https://berlinmitkind.de/"
+    },
+    {
+      title: "Black Parents Germany",
+      description: "Community and support for Black parents",
+      url: "https://www.blackparents.de"
+    }
+  ];
+
+  const unemploymentLinks: LinkItem[] = [
+    {
+      title: "Migrapreneur",
+      description: "Advice for migrants starting businesses",
+      url: "https://migrapreneur.notion.site/Migrapreneur-Community-gUG-5b29d02a86d4491498744fef4d748ec1"
     }
   ];
 
@@ -111,6 +154,10 @@ export default function BerlinDirectory() {
       setCurrentSection("parenthood");
     } else if (link.url === "arts-culture") {
       setCurrentSection("arts-culture");
+    } else if (link.url === "family-kids") {
+      setCurrentSection("family-kids");
+    } else if (link.url === "unemployment") {
+      setCurrentSection("unemployment");
     } else if (link.url) {
       window.open(link.url, "_blank", "noopener,noreferrer");
     }
@@ -355,7 +402,7 @@ export default function BerlinDirectory() {
       </div>
 
       <div className="text-center space-y-2">
-        <h1 className="text-2xl font-bold tracking-tight">Language Classes</h1>
+        <h1 className="text-2xl font-bold tracking-tight">Affordable German language classes</h1>
         <p className="text-sm text-muted-foreground">German language learning opportunities</p>
       </div>
 
@@ -639,6 +686,96 @@ export default function BerlinDirectory() {
     </div>
   );
 
+  const renderFamilyKids = () => (
+    <div className="space-y-6">
+      <div className="flex items-center space-x-4">
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => setCurrentSection("berliner")}
+          className="flex items-center space-x-2"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          <span>Back</span>
+        </Button>
+      </div>
+
+      <div className="text-center space-y-2">
+        <h1 className="text-2xl font-bold tracking-tight">Family and Kids</h1>
+        <p className="text-sm text-muted-foreground">Services and resources for families with children</p>
+      </div>
+
+      <div className="space-y-3">
+        {familyKidsLinks.map((link, index) => (
+          <Card
+            key={index}
+            className="cursor-pointer hover:bg-accent transition-colors"
+            onClick={() => handleLinkClick(link)}
+          >
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="font-medium">{link.title}</h3>
+                  {link.description && (
+                    <p className="text-sm text-muted-foreground mt-1">
+                      {link.description}
+                    </p>
+                  )}
+                </div>
+                <ExternalLink className="h-4 w-4 text-muted-foreground" />
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </div>
+  );
+
+  const renderUnemployment = () => (
+    <div className="space-y-6">
+      <div className="flex items-center space-x-4">
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => setCurrentSection("berliner")}
+          className="flex items-center space-x-2"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          <span>Back</span>
+        </Button>
+      </div>
+
+      <div className="text-center space-y-2">
+        <h1 className="text-2xl font-bold tracking-tight">Unemployment</h1>
+        <p className="text-sm text-muted-foreground">Where to go for monetary support</p>
+      </div>
+
+      <div className="space-y-3">
+        {unemploymentLinks.map((link, index) => (
+          <Card
+            key={index}
+            className="cursor-pointer hover:bg-accent transition-colors"
+            onClick={() => handleLinkClick(link)}
+          >
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="font-medium">{link.title}</h3>
+                  {link.description && (
+                    <p className="text-sm text-muted-foreground mt-1">
+                      {link.description}
+                    </p>
+                  )}
+                </div>
+                <ExternalLink className="h-4 w-4 text-muted-foreground" />
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </div>
+  );
+
   return (
     <div className="w-full max-w-md mx-auto py-8 px-4 min-h-screen">
       {currentSection === "main" && renderMainPage()}
@@ -652,6 +789,8 @@ export default function BerlinDirectory() {
       {currentSection === "sports" && renderSports()}
       {currentSection === "parenthood" && renderParenthood()}
       {currentSection === "arts-culture" && renderArtsCulture()}
+      {currentSection === "family-kids" && renderFamilyKids()}
+      {currentSection === "unemployment" && renderUnemployment()}
     </div>
   );
 }
