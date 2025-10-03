@@ -15,6 +15,22 @@ interface LinkItem {
 
 export default function BerlinDirectory() {
   const [currentSection, setCurrentSection] = useState<DirectorySection>("main");
+  const [isAnimating, setIsAnimating] = useState(false);
+  const [animationDirection, setAnimationDirection] = useState<"left" | "right">("left");
+
+  const navigateToSection = (section: DirectorySection, direction: "left" | "right" = "left") => {
+    if (isAnimating) return;
+
+    setIsAnimating(true);
+    setAnimationDirection(direction);
+
+    setTimeout(() => {
+      setCurrentSection(section);
+      setTimeout(() => {
+        setIsAnimating(false);
+      }, 50);
+    }, 150);
+  };
 
   const newHereLinks: LinkItem[] = [
     { title: "Immigration", description: "Immigration services and information" },
@@ -139,25 +155,25 @@ export default function BerlinDirectory() {
 
   const handleLinkClick = (link: LinkItem) => {
     if (link.url === "house-registration-checklist") {
-      setCurrentSection("house-registration");
+      navigateToSection("house-registration", "left");
     } else if (link.url === "gender-violence") {
-      setCurrentSection("gender-violence");
+      navigateToSection("gender-violence", "left");
     } else if (link.url === "short-term-funds") {
-      setCurrentSection("short-term-funds");
+      navigateToSection("short-term-funds", "left");
     } else if (link.url === "language-classes") {
-      setCurrentSection("language-classes");
+      navigateToSection("language-classes", "left");
     } else if (link.url === "communities") {
-      setCurrentSection("communities");
+      navigateToSection("communities", "left");
     } else if (link.url === "sports") {
-      setCurrentSection("sports");
+      navigateToSection("sports", "left");
     } else if (link.url === "parenthood") {
-      setCurrentSection("parenthood");
+      navigateToSection("parenthood", "left");
     } else if (link.url === "arts-culture") {
-      setCurrentSection("arts-culture");
+      navigateToSection("arts-culture", "left");
     } else if (link.url === "family-kids") {
-      setCurrentSection("family-kids");
+      navigateToSection("family-kids", "left");
     } else if (link.url === "unemployment") {
-      setCurrentSection("unemployment");
+      navigateToSection("unemployment", "left");
     } else if (link.url) {
       window.open(link.url, "_blank", "noopener,noreferrer");
     }
@@ -171,32 +187,28 @@ export default function BerlinDirectory() {
           Find the services you need in Berlin
         </p>
       </div>
-      
-      <div className="space-y-4">
-        <Card className="cursor-pointer hover:bg-accent transition-colors" onClick={() => setCurrentSection("berliner")}>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <h2 className="text-xl font-semibold">Berliner</h2>
-                <p className="text-muted-foreground mt-1">
-                  Services and resources for Berlin residents
-                </p>
-              </div>
-              <ExternalLink className="h-5 w-5 text-muted-foreground" />
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <Card className="cursor-pointer hover:bg-accent transition-all duration-200 hover:scale-105" onClick={() => navigateToSection("berliner", "left")}>
+          <CardContent className="p-4">
+            <div className="text-center space-y-2">
+              <Users className="h-8 w-8 mx-auto text-blue-600" />
+              <h2 className="text-lg font-semibold">Berliner</h2>
+              <p className="text-sm text-muted-foreground">
+                Services for residents
+              </p>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="cursor-pointer hover:bg-accent transition-colors" onClick={() => setCurrentSection("new-here")}>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <h2 className="text-xl font-semibold">I&apos;m new here</h2>
-                <p className="text-muted-foreground mt-1">
-                  Essential services for newcomers to Berlin
-                </p>
-              </div>
-              <ExternalLink className="h-5 w-5 text-muted-foreground" />
+        <Card className="cursor-pointer hover:bg-accent transition-all duration-200 hover:scale-105" onClick={() => navigateToSection("new-here", "left")}>
+          <CardContent className="p-4">
+            <div className="text-center space-y-2">
+              <Globe className="h-8 w-8 mx-auto text-green-600" />
+              <h2 className="text-lg font-semibold">I&apos;m new here</h2>
+              <p className="text-sm text-muted-foreground">
+                Services for newcomers
+              </p>
             </div>
           </CardContent>
         </Card>
@@ -211,13 +223,15 @@ export default function BerlinDirectory() {
       return "main";
     };
 
+    const shouldUseGrid = links.length <= 4 && links.every(link => link.title.length < 25);
+
     return (
       <div className="space-y-6">
         <div className="flex items-center space-x-4">
           <Button
             variant="ghost"
             size="sm"
-            onClick={() => setCurrentSection(getBackSection() as DirectorySection)}
+            onClick={() => navigateToSection(getBackSection() as DirectorySection, "right")}
             className="flex items-center space-x-2"
           >
             <ArrowLeft className="h-4 w-4" />
@@ -225,34 +239,46 @@ export default function BerlinDirectory() {
           </Button>
         </div>
 
-      <div className="text-center space-y-2">
-        <h1 className="text-2xl font-bold tracking-tight">{title}</h1>
-      </div>
+        <div className="text-center space-y-2">
+          <h1 className="text-2xl font-bold tracking-tight">{title}</h1>
+        </div>
 
-      <div className="space-y-3">
-        {links.map((link, index) => (
-          <Card 
-            key={index} 
-            className={`transition-colors ${link.url ? 'cursor-pointer hover:bg-accent' : 'opacity-75'}`}
-            onClick={() => handleLinkClick(link)}
-          >
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="font-medium">{link.title}</h3>
-                  {link.description && (
-                    <p className="text-sm text-muted-foreground mt-1">
-                      {link.description}
-                    </p>
-                  )}
-                </div>
-                {link.url && <ExternalLink className="h-4 w-4 text-muted-foreground" />}
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+        <div className={shouldUseGrid ? "grid grid-cols-1 sm:grid-cols-2 gap-3" : "space-y-3"}>
+          {links.map((link, index) => (
+            <Card
+              key={index}
+              className={`transition-all duration-200 ${link.url ? 'cursor-pointer hover:bg-accent hover:scale-105' : 'opacity-75'}`}
+              onClick={() => handleLinkClick(link)}
+            >
+              <CardContent className={shouldUseGrid ? "p-3 text-center" : "p-4"}>
+                {shouldUseGrid ? (
+                  <div className="space-y-2">
+                    <h3 className="font-medium text-sm">{link.title}</h3>
+                    {link.description && (
+                      <p className="text-xs text-muted-foreground">
+                        {link.description}
+                      </p>
+                    )}
+                    {link.url && <ExternalLink className="h-3 w-3 mx-auto text-muted-foreground" />}
+                  </div>
+                ) : (
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h3 className="font-medium">{link.title}</h3>
+                      {link.description && (
+                        <p className="text-sm text-muted-foreground mt-1">
+                          {link.description}
+                        </p>
+                      )}
+                    </div>
+                    {link.url && <ExternalLink className="h-4 w-4 text-muted-foreground" />}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          ))}
+        </div>
       </div>
-    </div>
     );
   };
 
@@ -262,7 +288,7 @@ export default function BerlinDirectory() {
         <Button
           variant="ghost"
           size="sm"
-          onClick={() => setCurrentSection("gender-violence")}
+          onClick={() => navigateToSection("gender-violence", "right")}
           className="flex items-center space-x-2"
         >
           <ArrowLeft className="h-4 w-4" />
@@ -393,7 +419,7 @@ export default function BerlinDirectory() {
         <Button
           variant="ghost"
           size="sm"
-          onClick={() => setCurrentSection("berliner")}
+          onClick={() => navigateToSection("berliner", "right")}
           className="flex items-center space-x-2"
         >
           <ArrowLeft className="h-4 w-4" />
@@ -470,7 +496,7 @@ export default function BerlinDirectory() {
         <Button
           variant="ghost"
           size="sm"
-          onClick={() => setCurrentSection("new-here")}
+          onClick={() => navigateToSection("new-here", "right")}
           className="flex items-center space-x-2"
         >
           <ArrowLeft className="h-4 w-4" />
@@ -542,7 +568,7 @@ export default function BerlinDirectory() {
         <Button
           variant="ghost"
           size="sm"
-          onClick={() => setCurrentSection("berliner")}
+          onClick={() => navigateToSection("berliner", "right")}
           className="flex items-center space-x-2"
         >
           <ArrowLeft className="h-4 w-4" />
@@ -590,7 +616,7 @@ export default function BerlinDirectory() {
         <Button
           variant="ghost"
           size="sm"
-          onClick={() => setCurrentSection("communities")}
+          onClick={() => navigateToSection("communities", "right")}
           className="flex items-center space-x-2"
         >
           <ArrowLeft className="h-4 w-4" />
@@ -624,7 +650,7 @@ export default function BerlinDirectory() {
         <Button
           variant="ghost"
           size="sm"
-          onClick={() => setCurrentSection("communities")}
+          onClick={() => navigateToSection("communities", "right")}
           className="flex items-center space-x-2"
         >
           <ArrowLeft className="h-4 w-4" />
@@ -658,7 +684,7 @@ export default function BerlinDirectory() {
         <Button
           variant="ghost"
           size="sm"
-          onClick={() => setCurrentSection("communities")}
+          onClick={() => navigateToSection("communities", "right")}
           className="flex items-center space-x-2"
         >
           <ArrowLeft className="h-4 w-4" />
@@ -692,7 +718,7 @@ export default function BerlinDirectory() {
         <Button
           variant="ghost"
           size="sm"
-          onClick={() => setCurrentSection("berliner")}
+          onClick={() => navigateToSection("berliner", "right")}
           className="flex items-center space-x-2"
         >
           <ArrowLeft className="h-4 w-4" />
@@ -737,7 +763,7 @@ export default function BerlinDirectory() {
         <Button
           variant="ghost"
           size="sm"
-          onClick={() => setCurrentSection("berliner")}
+          onClick={() => navigateToSection("berliner", "right")}
           className="flex items-center space-x-2"
         >
           <ArrowLeft className="h-4 w-4" />
@@ -778,19 +804,27 @@ export default function BerlinDirectory() {
 
   return (
     <div className="w-full max-w-md mx-auto py-8 px-4 min-h-screen">
-      {currentSection === "main" && renderMainPage()}
-      {currentSection === "new-here" && renderLinkSection("I'm new here", newHereLinks)}
-      {currentSection === "berliner" && renderLinkSection("Berliner", berlinerLinks)}
-      {currentSection === "house-registration" && renderHouseRegistrationChecklist()}
-      {currentSection === "gender-violence" && renderLinkSection("Gender Violence and Divorce", genderViolenceLinks)}
-      {currentSection === "short-term-funds" && renderShortTermFunds()}
-      {currentSection === "language-classes" && renderLanguageClasses()}
-      {currentSection === "communities" && renderCommunities()}
-      {currentSection === "sports" && renderSports()}
-      {currentSection === "parenthood" && renderParenthood()}
-      {currentSection === "arts-culture" && renderArtsCulture()}
-      {currentSection === "family-kids" && renderFamilyKids()}
-      {currentSection === "unemployment" && renderUnemployment()}
+      <div className={`transition-all duration-300 ease-in-out ${
+        isAnimating
+          ? animationDirection === "left"
+            ? "transform translate-x-[-100%] opacity-0"
+            : "transform translate-x-[100%] opacity-0"
+          : "transform translate-x-0 opacity-100"
+      }`}>
+        {currentSection === "main" && renderMainPage()}
+        {currentSection === "new-here" && renderLinkSection("I'm new here", newHereLinks)}
+        {currentSection === "berliner" && renderLinkSection("Berliner", berlinerLinks)}
+        {currentSection === "house-registration" && renderHouseRegistrationChecklist()}
+        {currentSection === "gender-violence" && renderLinkSection("Gender Violence and Divorce", genderViolenceLinks)}
+        {currentSection === "short-term-funds" && renderShortTermFunds()}
+        {currentSection === "language-classes" && renderLanguageClasses()}
+        {currentSection === "communities" && renderCommunities()}
+        {currentSection === "sports" && renderSports()}
+        {currentSection === "parenthood" && renderParenthood()}
+        {currentSection === "arts-culture" && renderArtsCulture()}
+        {currentSection === "family-kids" && renderFamilyKids()}
+        {currentSection === "unemployment" && renderUnemployment()}
+      </div>
     </div>
   );
 }
