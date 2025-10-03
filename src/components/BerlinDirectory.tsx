@@ -28,8 +28,8 @@ export default function BerlinDirectory() {
       setCurrentSection(section);
       setTimeout(() => {
         setIsAnimating(false);
-      }, 50);
-    }, 150);
+      }, 100);
+    }, 200);
   };
 
   const newHereLinks: LinkItem[] = [
@@ -223,7 +223,12 @@ export default function BerlinDirectory() {
       return "main";
     };
 
-    const shouldUseGrid = links.length <= 4 && links.every(link => link.title.length < 25);
+    // Use grid layout for most sections to make pages more compact
+    const shouldUseGrid = links.length > 1;
+    const gridCols = links.length === 2 ? "grid-cols-1 sm:grid-cols-2" :
+                     links.length === 3 ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3" :
+                     links.length >= 4 ? "grid-cols-2 sm:grid-cols-2 lg:grid-cols-3" :
+                     "grid-cols-1";
 
     return (
       <div className="space-y-6">
@@ -243,23 +248,23 @@ export default function BerlinDirectory() {
           <h1 className="text-2xl font-bold tracking-tight">{title}</h1>
         </div>
 
-        <div className={shouldUseGrid ? "grid grid-cols-1 sm:grid-cols-2 gap-3" : "space-y-3"}>
+        <div className={shouldUseGrid ? `grid ${gridCols} gap-3` : "space-y-3"}>
           {links.map((link, index) => (
             <Card
               key={index}
-              className={`transition-all duration-200 ${link.url ? 'cursor-pointer hover:bg-accent hover:scale-105' : 'opacity-75'}`}
+              className={`transition-all duration-200 ${link.url ? 'cursor-pointer hover:bg-accent hover:scale-[1.02]' : 'opacity-75'}`}
               onClick={() => handleLinkClick(link)}
             >
               <CardContent className={shouldUseGrid ? "p-3 text-center" : "p-4"}>
                 {shouldUseGrid ? (
-                  <div className="space-y-2">
-                    <h3 className="font-medium text-sm">{link.title}</h3>
+                  <div className="space-y-2 min-h-[80px] flex flex-col justify-center">
+                    <h3 className="font-medium text-sm leading-tight">{link.title}</h3>
                     {link.description && (
-                      <p className="text-xs text-muted-foreground">
+                      <p className="text-xs text-muted-foreground line-clamp-2">
                         {link.description}
                       </p>
                     )}
-                    {link.url && <ExternalLink className="h-3 w-3 mx-auto text-muted-foreground" />}
+                    {link.url && <ExternalLink className="h-3 w-3 mx-auto text-muted-foreground mt-auto" />}
                   </div>
                 ) : (
                   <div className="flex items-center justify-between">
@@ -731,24 +736,22 @@ export default function BerlinDirectory() {
         <p className="text-sm text-muted-foreground">Services and resources for families with children</p>
       </div>
 
-      <div className="space-y-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {familyKidsLinks.map((link, index) => (
           <Card
             key={index}
-            className="cursor-pointer hover:bg-accent transition-colors"
+            className="cursor-pointer hover:bg-accent transition-all duration-200 hover:scale-[1.02]"
             onClick={() => handleLinkClick(link)}
           >
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="font-medium">{link.title}</h3>
-                  {link.description && (
-                    <p className="text-sm text-muted-foreground mt-1">
-                      {link.description}
-                    </p>
-                  )}
-                </div>
-                <ExternalLink className="h-4 w-4 text-muted-foreground" />
+            <CardContent className="p-3 text-center">
+              <div className="space-y-2 min-h-[100px] flex flex-col justify-center">
+                <h3 className="font-medium text-sm leading-tight">{link.title}</h3>
+                {link.description && (
+                  <p className="text-xs text-muted-foreground line-clamp-3">
+                    {link.description}
+                  </p>
+                )}
+                <ExternalLink className="h-3 w-3 mx-auto text-muted-foreground mt-auto" />
               </div>
             </CardContent>
           </Card>
@@ -776,11 +779,11 @@ export default function BerlinDirectory() {
         <p className="text-sm text-muted-foreground">Where to go for monetary support</p>
       </div>
 
-      <div className="space-y-3">
+      <div className="grid grid-cols-1 gap-3">
         {unemploymentLinks.map((link, index) => (
           <Card
             key={index}
-            className="cursor-pointer hover:bg-accent transition-colors"
+            className="cursor-pointer hover:bg-accent transition-all duration-200 hover:scale-[1.02]"
             onClick={() => handleLinkClick(link)}
           >
             <CardContent className="p-4">
@@ -804,12 +807,12 @@ export default function BerlinDirectory() {
 
   return (
     <div className="w-full max-w-md mx-auto py-8 px-4 min-h-screen">
-      <div className={`transition-all duration-300 ease-in-out ${
+      <div className={`transition-all duration-500 ease-out ${
         isAnimating
           ? animationDirection === "left"
-            ? "transform translate-x-[-100%] opacity-0"
-            : "transform translate-x-[100%] opacity-0"
-          : "transform translate-x-0 opacity-100"
+            ? "transform translate-x-[-100%] opacity-0 scale-95"
+            : "transform translate-x-[100%] opacity-0 scale-95"
+          : "transform translate-x-0 opacity-100 scale-100"
       }`}>
         {currentSection === "main" && renderMainPage()}
         {currentSection === "new-here" && renderLinkSection("I'm new here", newHereLinks)}
