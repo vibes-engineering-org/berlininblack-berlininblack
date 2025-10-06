@@ -180,35 +180,47 @@ export default function BerlinDirectory() {
   };
 
   const renderMainPage = () => (
-    <div className="space-y-6">
-      <div className="text-center space-y-4">
-        <h1 className="text-3xl font-bold tracking-tight">Berlin Services Directory</h1>
-        <p className="text-lg text-muted-foreground">
-          Find the services you need in Berlin
-        </p>
+    <div className="space-y-8">
+      <div className="text-center space-y-6">
+        <div className="space-y-3">
+          <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-white drop-shadow-2xl">
+            Berlin Services Directory
+          </h1>
+          <p className="text-xl text-white/90 drop-shadow-lg max-w-2xl mx-auto leading-relaxed">
+            Find the services you need in Berlin
+          </p>
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <Card className="cursor-pointer hover:bg-accent transition-all duration-200 hover:scale-105" onClick={() => navigateToSection("berliner", "left")}>
-          <CardContent className="p-4">
-            <div className="text-center space-y-2">
-              <Users className="h-8 w-8 mx-auto text-blue-600" />
-              <h2 className="text-lg font-semibold">Berliner</h2>
-              <p className="text-sm text-muted-foreground">
-                Services for residents
-              </p>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <Card className="cursor-pointer hover:bg-white/95 transition-all duration-300 hover:scale-105 hover:shadow-2xl backdrop-blur-sm bg-white/90 border-0 shadow-xl" onClick={() => navigateToSection("berliner", "left")}>
+          <CardContent className="p-8">
+            <div className="text-center space-y-4">
+              <div className="w-16 h-16 mx-auto bg-blue-100 rounded-full flex items-center justify-center">
+                <Users className="h-8 w-8 text-blue-600" />
+              </div>
+              <div className="space-y-2">
+                <h2 className="text-xl font-bold text-gray-900">Berliner</h2>
+                <p className="text-gray-600 leading-relaxed">
+                  Services for residents
+                </p>
+              </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="cursor-pointer hover:bg-accent transition-all duration-200 hover:scale-105" onClick={() => navigateToSection("new-here", "left")}>
-          <CardContent className="p-4">
-            <div className="text-center space-y-2">
-              <Globe className="h-8 w-8 mx-auto text-green-600" />
-              <h2 className="text-lg font-semibold">I&apos;m new here</h2>
-              <p className="text-sm text-muted-foreground">
-                Services for newcomers
-              </p>
+        <Card className="cursor-pointer hover:bg-white/95 transition-all duration-300 hover:scale-105 hover:shadow-2xl backdrop-blur-sm bg-white/90 border-0 shadow-xl" onClick={() => navigateToSection("new-here", "left")}>
+          <CardContent className="p-8">
+            <div className="text-center space-y-4">
+              <div className="w-16 h-16 mx-auto bg-green-100 rounded-full flex items-center justify-center">
+                <Globe className="h-8 w-8 text-green-600" />
+              </div>
+              <div className="space-y-2">
+                <h2 className="text-xl font-bold text-gray-900">I&apos;m new here</h2>
+                <p className="text-gray-600 leading-relaxed">
+                  Services for newcomers
+                </p>
+              </div>
             </div>
           </CardContent>
         </Card>
@@ -806,7 +818,7 @@ export default function BerlinDirectory() {
   );
 
   return (
-    <div className="w-full max-w-md mx-auto py-8 px-4 min-h-screen">
+    <div className="w-full max-w-lg mx-auto py-12 px-6 min-h-screen">
       <div className={`transition-all duration-500 ease-out ${
         isAnimating
           ? animationDirection === "left"
