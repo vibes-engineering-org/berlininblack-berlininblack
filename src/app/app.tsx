@@ -37,17 +37,20 @@ export default function App() {
         </CardContent>
       </Card>
 
-      <DaimoPayTransferButton
-        text="Pay with DaimoPay"
-        toChainId={baseUSDC.chainId}
-        toAddress={getAddress("0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045")}
-        tokenAddress={baseUSDC.token as `0x${string}`}
-        amount="1"
-        onPaymentStarted={() => console.log("Payment started")}
-        onPaymentCompleted={() => console.log("Payment completed")}
-      />
-      <FileUploadCard />
-      <VisitorCounter />
+      {/* Berlin Directory Landing Page */}
+      <Card>
+        <CardContent className="p-6">
+          <h1 className="text-2xl font-bold text-center mb-6">Berlin Services Directory</h1>
+          <div className="space-y-4">
+            <button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-4 px-6 rounded-lg font-medium transition-colors">
+              I&apos;m new here
+            </button>
+            <button className="w-full bg-green-600 hover:bg-green-700 text-white py-4 px-6 rounded-lg font-medium transition-colors">
+              Berliner
+            </button>
+          </div>
+        </CardContent>
+      </Card>
       {/* TEMPLATE_CONTENT_END */}
     </div>
   );
