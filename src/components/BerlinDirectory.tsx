@@ -1,11 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { Input } from "~/components/ui/input";
 import { ArrowLeft, ExternalLink, CheckCircle2, Phone, Globe, Users, Heart, Palette, DollarSign, Shield, GraduationCap, Handshake, Baby, PiggyBank, Building2, Banknote, Search, X } from "lucide-react";
 import { useSearch, type SearchableItem } from "~/hooks/useSearch";
+import LanguageDropdown from "~/components/LanguageDropdown";
+import { getTranslations, type Language } from "~/lib/translations";
 
 type DirectorySection = "main" | "new-here" | "berliner" | "house-registration" | "gender-violence" | "short-term-funds" | "language-classes" | "communities" | "sports" | "parenthood" | "arts-culture" | "family-kids" | "unemployment";
 
@@ -21,6 +23,16 @@ export default function BerlinDirectory() {
   const [currentSection, setCurrentSection] = useState<DirectorySection>("main");
   const [isAnimating, setIsAnimating] = useState(false);
   const [animationDirection, setAnimationDirection] = useState<"left" | "right">("left");
+  const [language, setLanguage] = useState<Language>("en");
+
+  // Detect language from URL on mount and when URL changes
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const langParam = urlParams.get("lang") as Language;
+    setLanguage(langParam === "de" ? "de" : "en");
+  }, []);
+
+  const t = getTranslations(language);
 
   // Create searchable items from all links
   const searchableItems: SearchableItem[] = [
@@ -455,9 +467,9 @@ export default function BerlinDirectory() {
   const renderSearchResults = () => (
     <div className="space-y-4">
       <div className="text-center space-y-2">
-        <h2 className="text-xl font-semibold dark:text-white">Search Results</h2>
+        <h2 className="text-xl font-semibold dark:text-white">{t.searchResults}</h2>
         <p className="text-sm text-muted-foreground dark:text-gray-400">
-          Found {results.length} result{results.length !== 1 ? 's' : ''} for &quot;{query}&quot;
+          {t.foundResults} {results.length} {results.length !== 1 ? t.results : t.result} {t.for} &quot;{query}&quot;
         </p>
       </div>
 
@@ -486,7 +498,7 @@ export default function BerlinDirectory() {
                       </p>
                     )}
                     <p className="text-xs text-muted-foreground dark:text-gray-500 mt-1">
-                      in {item.section}
+                      {t.in} {item.section}
                     </p>
                   </div>
                 </div>
@@ -504,10 +516,10 @@ export default function BerlinDirectory() {
       <div className="text-center space-y-6">
         <div className="space-y-3">
           <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 dark:text-white">
-            Berlin Services Directory
+            {t.title}
           </h1>
           <p className="text-xl text-gray-700 dark:text-gray-300 max-w-2xl mx-auto leading-relaxed">
-            Find the services you need in Berlin
+            {t.subtitle}
           </p>
         </div>
 
@@ -517,7 +529,7 @@ export default function BerlinDirectory() {
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground dark:text-gray-400" />
             <Input
               type="text"
-              placeholder="Search for services..."
+              placeholder={t.searchPlaceholder}
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               className="pl-10 pr-10 dark:bg-slate-800/50 dark:border-slate-700 dark:text-white dark:placeholder-gray-400"
@@ -548,9 +560,9 @@ export default function BerlinDirectory() {
                 <Users className="h-8 w-8 text-blue-700 dark:text-blue-300" />
               </div>
               <div className="space-y-2">
-                <h2 className="text-xl font-bold text-blue-800 dark:text-blue-200">Berliner</h2>
+                <h2 className="text-xl font-bold text-blue-800 dark:text-blue-200">{t.berliner}</h2>
                 <p className="text-blue-700 dark:text-blue-300 leading-relaxed">
-                  Services for residents
+                  {t.berlinerDesc}
                 </p>
               </div>
             </div>
@@ -564,9 +576,9 @@ export default function BerlinDirectory() {
                 <Globe className="h-8 w-8 text-green-700 dark:text-green-300" />
               </div>
               <div className="space-y-2">
-                <h2 className="text-xl font-bold text-green-800 dark:text-green-200">I&apos;m new here</h2>
+                <h2 className="text-xl font-bold text-green-800 dark:text-green-200">{t.newHere}</h2>
                 <p className="text-green-700 dark:text-green-300 leading-relaxed">
-                  Services for newcomers
+                  {t.newHereDesc}
                 </p>
               </div>
             </div>
@@ -621,7 +633,7 @@ export default function BerlinDirectory() {
             className="flex items-center space-x-2 dark:text-white dark:hover:bg-slate-800"
           >
             <ArrowLeft className="h-4 w-4" />
-            <span>Back</span>
+            <span>{t.back}</span>
           </Button>
         </div>
 
@@ -1220,7 +1232,12 @@ export default function BerlinDirectory() {
   );
 
   return (
-    <div className="w-full max-w-lg mx-auto py-12 px-6 min-h-screen">
+    <div className="w-full max-w-lg mx-auto py-12 px-6 min-h-screen relative">
+      {/* Language Dropdown - Fixed at top right */}
+      <div className="absolute top-4 right-4 z-10">
+        <LanguageDropdown />
+      </div>
+
       <div className={`transition-all duration-500 ease-out ${
         isAnimating
           ? animationDirection === "left"
