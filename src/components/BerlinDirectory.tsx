@@ -183,25 +183,25 @@ export default function BerlinDirectory() {
     <div className="space-y-8">
       <div className="text-center space-y-6">
         <div className="space-y-3">
-          <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-white drop-shadow-2xl">
+          <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 dark:text-white">
             Berlin Services Directory
           </h1>
-          <p className="text-xl text-white/90 drop-shadow-lg max-w-2xl mx-auto leading-relaxed">
+          <p className="text-xl text-gray-700 dark:text-gray-300 max-w-2xl mx-auto leading-relaxed">
             Find the services you need in Berlin
           </p>
         </div>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-        <Card className="cursor-pointer hover:bg-white/95 dark:hover:bg-slate-800/95 transition-all duration-300 hover:scale-105 hover:shadow-2xl backdrop-blur-sm bg-white/90 dark:bg-slate-800/90 border-0 shadow-xl" onClick={() => navigateToSection("berliner", "left")}>
+        <Card className="cursor-pointer hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all duration-300 hover:scale-105 hover:shadow-2xl bg-blue-100 dark:bg-blue-800/30 border-0 shadow-xl" onClick={() => navigateToSection("berliner", "left")}>
           <CardContent className="p-8">
             <div className="text-center space-y-4">
-              <div className="w-16 h-16 mx-auto bg-blue-100 dark:bg-blue-900/50 rounded-full flex items-center justify-center">
-                <Users className="h-8 w-8 text-blue-600 dark:text-blue-400" />
+              <div className="w-16 h-16 mx-auto bg-blue-200 dark:bg-blue-700/50 rounded-full flex items-center justify-center">
+                <Users className="h-8 w-8 text-blue-700 dark:text-blue-300" />
               </div>
               <div className="space-y-2">
-                <h2 className="text-xl font-bold text-gray-900 dark:text-white">Berliner</h2>
-                <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+                <h2 className="text-xl font-bold text-blue-800 dark:text-blue-200">Berliner</h2>
+                <p className="text-blue-700 dark:text-blue-300 leading-relaxed">
                   Services for residents
                 </p>
               </div>
@@ -209,15 +209,15 @@ export default function BerlinDirectory() {
           </CardContent>
         </Card>
 
-        <Card className="cursor-pointer hover:bg-white/95 dark:hover:bg-slate-800/95 transition-all duration-300 hover:scale-105 hover:shadow-2xl backdrop-blur-sm bg-white/90 dark:bg-slate-800/90 border-0 shadow-xl" onClick={() => navigateToSection("new-here", "left")}>
+        <Card className="cursor-pointer hover:bg-green-50 dark:hover:bg-green-900/20 transition-all duration-300 hover:scale-105 hover:shadow-2xl bg-green-100 dark:bg-green-800/30 border-0 shadow-xl" onClick={() => navigateToSection("new-here", "left")}>
           <CardContent className="p-8">
             <div className="text-center space-y-4">
-              <div className="w-16 h-16 mx-auto bg-green-100 dark:bg-green-900/50 rounded-full flex items-center justify-center">
-                <Globe className="h-8 w-8 text-green-600 dark:text-green-400" />
+              <div className="w-16 h-16 mx-auto bg-green-200 dark:bg-green-700/50 rounded-full flex items-center justify-center">
+                <Globe className="h-8 w-8 text-green-700 dark:text-green-300" />
               </div>
               <div className="space-y-2">
-                <h2 className="text-xl font-bold text-gray-900 dark:text-white">I&apos;m new here</h2>
-                <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+                <h2 className="text-xl font-bold text-green-800 dark:text-green-200">I&apos;m new here</h2>
+                <p className="text-green-700 dark:text-green-300 leading-relaxed">
                   Services for newcomers
                 </p>
               </div>
