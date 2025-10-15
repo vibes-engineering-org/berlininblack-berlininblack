@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
-import { ArrowLeft, ExternalLink, CheckCircle2, Phone, Globe, Users, Heart, Palette, DollarSign, Shield, GraduationCap, Handshake, Baby } from "lucide-react";
+import { ArrowLeft, ExternalLink, CheckCircle2, Phone, Globe, Users, Heart, Palette, DollarSign, Shield, GraduationCap, Handshake, Baby, PiggyBank, Building2, Banknote } from "lucide-react";
 
 type DirectorySection = "main" | "new-here" | "berliner" | "house-registration" | "gender-violence" | "short-term-funds" | "language-classes" | "communities" | "sports" | "parenthood" | "arts-culture" | "family-kids" | "unemployment";
 
@@ -48,11 +48,6 @@ export default function BerlinDirectory() {
     },
     { title: "Tax Registration", description: "Tax number and registration services" },
     {
-      title: "Startup grants",
-      description: "Funding opportunities for startups",
-      url: "https://www.ibbventures.de/de/news/impact-funding-map"
-    },
-    {
       title: "Co-tasker",
       description: "Task and service marketplace",
       url: "https://www.co-tasker.com/"
@@ -72,7 +67,7 @@ export default function BerlinDirectory() {
       description: "Support for finding a safe home",
       url: "gender-violence",
       icon: "Shield",
-      color: "red"
+      color: "slate"
     },
     {
       title: "Language Classes",
@@ -160,15 +155,22 @@ export default function BerlinDirectory() {
   const unemploymentLinks: LinkItem[] = [
     {
       title: "Save money",
-      description: "Tips and resources for saving money while unemployed"
+      description: "Tips and resources for saving money while unemployed",
+      icon: "PiggyBank",
+      color: "blue"
     },
     {
       title: "Start a business",
-      description: "Resources and support for starting your own business"
+      description: "Resources and support for starting your own business",
+      icon: "Building2",
+      color: "green",
+      url: "https://www.ibbventures.de/de/news/impact-funding-map"
     },
     {
       title: "Get money",
-      description: "Financial support and assistance programs"
+      description: "Financial support and assistance programs",
+      icon: "Banknote",
+      color: "yellow"
     }
   ];
 
@@ -258,6 +260,9 @@ export default function BerlinDirectory() {
       case "GraduationCap": return <GraduationCap {...iconProps} />;
       case "Handshake": return <Handshake {...iconProps} />;
       case "Baby": return <Baby {...iconProps} />;
+      case "PiggyBank": return <PiggyBank {...iconProps} />;
+      case "Building2": return <Building2 {...iconProps} />;
+      case "Banknote": return <Banknote {...iconProps} />;
       default: return <ExternalLink {...iconProps} />;
     }
   };
@@ -849,28 +854,39 @@ export default function BerlinDirectory() {
         <p className="text-sm text-muted-foreground dark:text-gray-400">Where to go for monetary support</p>
       </div>
 
-      <div className="grid grid-cols-1 gap-3">
-        {unemploymentLinks.map((link, index) => (
-          <Card
-            key={index}
-            className="cursor-pointer hover:bg-accent dark:hover:bg-slate-700 transition-all duration-200 hover:scale-[1.02] dark:bg-slate-800/90 dark:border-slate-700"
-            onClick={() => handleLinkClick(link)}
-          >
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="font-medium dark:text-white">{link.title}</h3>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+        {unemploymentLinks.map((link, index) => {
+          const cardColorClass = link.color
+            ? `bg-${link.color}-50 dark:bg-${link.color}-900/20 border-${link.color}-200 dark:border-${link.color}-800 hover:bg-${link.color}-100 dark:hover:bg-${link.color}-900/30`
+            : 'dark:bg-slate-800/90 dark:border-slate-700';
+
+          return (
+            <Card
+              key={index}
+              className={`transition-all duration-200 ${cardColorClass} ${link.url ? 'cursor-pointer hover:scale-[1.02]' : 'opacity-75'}`}
+              onClick={() => handleLinkClick(link)}
+            >
+              <CardContent className="p-3 text-center">
+                <div className="space-y-2 min-h-[80px] flex flex-col justify-center">
+                  {link.icon && link.color && (
+                    <div className="mb-2">
+                      {getIconComponent(link.icon, link.color)}
+                    </div>
+                  )}
+                  <h3 className={`font-medium text-sm leading-tight ${link.color ? `text-${link.color}-800 dark:text-${link.color}-200` : 'dark:text-white'}`}>
+                    {link.title}
+                  </h3>
                   {link.description && (
-                    <p className="text-sm text-muted-foreground dark:text-gray-400 mt-1">
+                    <p className={`text-xs line-clamp-2 ${link.color ? `text-${link.color}-700 dark:text-${link.color}-300` : 'text-muted-foreground dark:text-gray-400'}`}>
                       {link.description}
                     </p>
                   )}
+                  {link.url && <ExternalLink className="h-3 w-3 mx-auto text-muted-foreground dark:text-gray-400 mt-auto" />}
                 </div>
-                <ExternalLink className="h-4 w-4 text-muted-foreground dark:text-gray-400" />
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+              </CardContent>
+            </Card>
+          );
+        })}
       </div>
     </div>
   );
