@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
-import { ArrowLeft, ExternalLink, CheckCircle2, Phone, Globe, Users, Heart, Palette } from "lucide-react";
+import { ArrowLeft, ExternalLink, CheckCircle2, Phone, Globe, Users, Heart, Palette, DollarSign, Shield, GraduationCap, Handshake, Baby } from "lucide-react";
 
 type DirectorySection = "main" | "new-here" | "berliner" | "house-registration" | "gender-violence" | "short-term-funds" | "language-classes" | "communities" | "sports" | "parenthood" | "arts-culture" | "family-kids" | "unemployment";
 
@@ -11,6 +11,8 @@ interface LinkItem {
   title: string;
   url?: string;
   description?: string;
+  icon?: string;
+  color?: string;
 }
 
 export default function BerlinDirectory() {
@@ -61,27 +63,37 @@ export default function BerlinDirectory() {
     {
       title: "Unemployment",
       description: "Where to go for monetary support",
-      url: "unemployment"
+      url: "unemployment",
+      icon: "DollarSign",
+      color: "green"
     },
     {
       title: "Gender Violence and Divorce",
       description: "Support for finding a safe home",
-      url: "gender-violence"
+      url: "gender-violence",
+      icon: "Shield",
+      color: "red"
     },
     {
       title: "Language Classes",
       description: "German language learning opportunities",
-      url: "language-classes"
+      url: "language-classes",
+      icon: "GraduationCap",
+      color: "blue"
     },
     {
       title: "Communities",
       description: "Community groups and social connections",
-      url: "communities"
+      url: "communities",
+      icon: "Handshake",
+      color: "purple"
     },
     {
       title: "Family and Kids",
       description: "Services for families with children",
-      url: "family-kids"
+      url: "family-kids",
+      icon: "Baby",
+      color: "pink"
     }
   ];
 
@@ -147,9 +159,16 @@ export default function BerlinDirectory() {
 
   const unemploymentLinks: LinkItem[] = [
     {
-      title: "Migrapreneur",
-      description: "Advice for migrants starting businesses",
-      url: "https://migrapreneur.notion.site/Migrapreneur-Community-gUG-5b29d02a86d4491498744fef4d748ec1"
+      title: "Save money",
+      description: "Tips and resources for saving money while unemployed"
+    },
+    {
+      title: "Start a business",
+      description: "Resources and support for starting your own business"
+    },
+    {
+      title: "Get money",
+      description: "Financial support and assistance programs"
     }
   ];
 
@@ -228,6 +247,21 @@ export default function BerlinDirectory() {
     </div>
   );
 
+  const getIconComponent = (iconName: string, color: string) => {
+    const iconProps = {
+      className: `h-6 w-6 text-${color}-600 dark:text-${color}-400`
+    };
+
+    switch (iconName) {
+      case "DollarSign": return <DollarSign {...iconProps} />;
+      case "Shield": return <Shield {...iconProps} />;
+      case "GraduationCap": return <GraduationCap {...iconProps} />;
+      case "Handshake": return <Handshake {...iconProps} />;
+      case "Baby": return <Baby {...iconProps} />;
+      default: return <ExternalLink {...iconProps} />;
+    }
+  };
+
   const renderLinkSection = (title: string, links: LinkItem[]) => {
     const getBackSection = () => {
       if (title === "Gender Violence and Divorce") return "berliner";
@@ -241,6 +275,8 @@ export default function BerlinDirectory() {
                      links.length === 3 ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3" :
                      links.length >= 4 ? "grid-cols-2 sm:grid-cols-2 lg:grid-cols-3" :
                      "grid-cols-1";
+
+    const isBerlinerSection = title === "Berliner";
 
     return (
       <div className="space-y-6">
@@ -261,39 +297,61 @@ export default function BerlinDirectory() {
         </div>
 
         <div className={shouldUseGrid ? `grid ${gridCols} gap-3` : "space-y-3"}>
-          {links.map((link, index) => (
-            <Card
-              key={index}
-              className={`transition-all duration-200 dark:bg-slate-800/90 dark:border-slate-700 ${link.url ? 'cursor-pointer hover:bg-accent dark:hover:bg-slate-700 hover:scale-[1.02]' : 'opacity-75'}`}
-              onClick={() => handleLinkClick(link)}
-            >
-              <CardContent className={shouldUseGrid ? "p-3 text-center" : "p-4"}>
-                {shouldUseGrid ? (
-                  <div className="space-y-2 min-h-[80px] flex flex-col justify-center">
-                    <h3 className="font-medium text-sm leading-tight dark:text-white">{link.title}</h3>
-                    {link.description && (
-                      <p className="text-xs text-muted-foreground dark:text-gray-400 line-clamp-2">
-                        {link.description}
-                      </p>
-                    )}
-                    {link.url && <ExternalLink className="h-3 w-3 mx-auto text-muted-foreground dark:text-gray-400 mt-auto" />}
-                  </div>
-                ) : (
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h3 className="font-medium dark:text-white">{link.title}</h3>
+          {links.map((link, index) => {
+            const cardColorClass = isBerlinerSection && link.color
+              ? `bg-${link.color}-50 dark:bg-${link.color}-900/20 border-${link.color}-200 dark:border-${link.color}-800 hover:bg-${link.color}-100 dark:hover:bg-${link.color}-900/30`
+              : 'dark:bg-slate-800/90 dark:border-slate-700';
+
+            return (
+              <Card
+                key={index}
+                className={`transition-all duration-200 ${cardColorClass} ${link.url ? 'cursor-pointer hover:scale-[1.02]' : 'opacity-75'}`}
+                onClick={() => handleLinkClick(link)}
+              >
+                <CardContent className={shouldUseGrid ? "p-3 text-center" : "p-4"}>
+                  {shouldUseGrid ? (
+                    <div className="space-y-2 min-h-[80px] flex flex-col justify-center">
+                      {isBerlinerSection && link.icon && link.color && (
+                        <div className="mb-2">
+                          {getIconComponent(link.icon, link.color)}
+                        </div>
+                      )}
+                      <h3 className={`font-medium text-sm leading-tight ${isBerlinerSection && link.color ? `text-${link.color}-800 dark:text-${link.color}-200` : 'dark:text-white'}`}>
+                        {link.title}
+                      </h3>
                       {link.description && (
-                        <p className="text-sm text-muted-foreground dark:text-gray-400 mt-1">
+                        <p className={`text-xs line-clamp-2 ${isBerlinerSection && link.color ? `text-${link.color}-700 dark:text-${link.color}-300` : 'text-muted-foreground dark:text-gray-400'}`}>
                           {link.description}
                         </p>
                       )}
+                      {link.url && !isBerlinerSection && <ExternalLink className="h-3 w-3 mx-auto text-muted-foreground dark:text-gray-400 mt-auto" />}
                     </div>
-                    {link.url && <ExternalLink className="h-4 w-4 text-muted-foreground dark:text-gray-400" />}
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          ))}
+                  ) : (
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-3">
+                        {isBerlinerSection && link.icon && link.color && (
+                          <div className="flex-shrink-0">
+                            {getIconComponent(link.icon, link.color)}
+                          </div>
+                        )}
+                        <div>
+                          <h3 className={`font-medium ${isBerlinerSection && link.color ? `text-${link.color}-800 dark:text-${link.color}-200` : 'dark:text-white'}`}>
+                            {link.title}
+                          </h3>
+                          {link.description && (
+                            <p className={`text-sm mt-1 ${isBerlinerSection && link.color ? `text-${link.color}-700 dark:text-${link.color}-300` : 'text-muted-foreground dark:text-gray-400'}`}>
+                              {link.description}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                      {link.url && !isBerlinerSection && <ExternalLink className="h-4 w-4 text-muted-foreground dark:text-gray-400" />}
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            );
+          })}
         </div>
       </div>
     );
