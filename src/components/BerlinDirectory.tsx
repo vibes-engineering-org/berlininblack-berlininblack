@@ -3,7 +3,9 @@
 import { useState } from "react";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
-import { ArrowLeft, ExternalLink, CheckCircle2, Phone, Globe, Users, Heart, Palette, DollarSign, Shield, GraduationCap, Handshake, Baby, PiggyBank, Building2, Banknote } from "lucide-react";
+import { Input } from "~/components/ui/input";
+import { ArrowLeft, ExternalLink, CheckCircle2, Phone, Globe, Users, Heart, Palette, DollarSign, Shield, GraduationCap, Handshake, Baby, PiggyBank, Building2, Banknote, Search, X } from "lucide-react";
+import { useSearch, type SearchableItem } from "~/hooks/useSearch";
 
 type DirectorySection = "main" | "new-here" | "berliner" | "house-registration" | "gender-violence" | "short-term-funds" | "language-classes" | "communities" | "sports" | "parenthood" | "arts-culture" | "family-kids" | "unemployment";
 
@@ -19,6 +21,222 @@ export default function BerlinDirectory() {
   const [currentSection, setCurrentSection] = useState<DirectorySection>("main");
   const [isAnimating, setIsAnimating] = useState(false);
   const [animationDirection, setAnimationDirection] = useState<"left" | "right">("left");
+
+  // Create searchable items from all links
+  const searchableItems: SearchableItem[] = [
+    // Main sections
+    {
+      id: "berliner",
+      title: "Berliner",
+      description: "Services for residents",
+      section: "Main",
+      keywords: ["resident", "local", "citizen"]
+    },
+    {
+      id: "new-here",
+      title: "I'm new here",
+      description: "Services for newcomers",
+      section: "Main",
+      keywords: ["newcomer", "immigrant", "new", "arrival"]
+    },
+    // New here links
+    {
+      id: "immigration",
+      title: "Immigration",
+      description: "Immigration services and information",
+      section: "I'm new here",
+      keywords: ["visa", "permit", "immigration"]
+    },
+    {
+      id: "house-registration",
+      title: "House Registration",
+      description: "Residential registration (Anmeldung)",
+      section: "I'm new here",
+      url: "house-registration-checklist",
+      keywords: ["anmeldung", "registration", "address", "residence"]
+    },
+    {
+      id: "health-insurance",
+      title: "Health Insurance",
+      description: "Health insurance providers and guidance",
+      section: "I'm new here",
+      url: "https://allaboutberlin.com/guides/german-health-insurance",
+      keywords: ["health", "insurance", "medical", "krankenversicherung"]
+    },
+    {
+      id: "tax-registration",
+      title: "Tax Registration",
+      description: "Tax number and registration services",
+      section: "I'm new here",
+      keywords: ["tax", "steuer", "number", "registration"]
+    },
+    {
+      id: "co-tasker",
+      title: "Co-tasker",
+      description: "Task and service marketplace",
+      section: "I'm new here",
+      url: "https://www.co-tasker.com/",
+      keywords: ["tasks", "services", "marketplace", "work", "jobs"]
+    },
+    // Berliner links
+    {
+      id: "unemployment",
+      title: "Unemployment",
+      description: "Where to go for monetary support",
+      section: "Berliner",
+      url: "unemployment",
+      icon: "DollarSign",
+      color: "green",
+      keywords: ["jobless", "support", "money", "benefits", "arbeitslos"]
+    },
+    {
+      id: "gender-violence",
+      title: "Gender Violence and Divorce",
+      description: "Support for finding a safe home",
+      section: "Berliner",
+      url: "gender-violence",
+      icon: "Shield",
+      color: "slate",
+      keywords: ["violence", "abuse", "divorce", "safety", "women", "help"]
+    },
+    {
+      id: "language-classes",
+      title: "Language Classes",
+      description: "German language learning opportunities",
+      section: "Berliner",
+      url: "language-classes",
+      icon: "GraduationCap",
+      color: "blue",
+      keywords: ["german", "language", "learn", "deutsch", "classes"]
+    },
+    {
+      id: "communities",
+      title: "Communities",
+      description: "Community groups and social connections",
+      section: "Berliner",
+      url: "communities",
+      icon: "Handshake",
+      color: "purple",
+      keywords: ["community", "social", "groups", "connect", "people"]
+    },
+    {
+      id: "family-kids",
+      title: "Family and Kids",
+      description: "Services for families with children",
+      section: "Berliner",
+      url: "family-kids",
+      icon: "Baby",
+      color: "pink",
+      keywords: ["family", "children", "kids", "parents", "parenting"]
+    },
+    // Unemployment sub-links
+    {
+      id: "save-money",
+      title: "Save money",
+      description: "Tips and resources for saving money while unemployed",
+      section: "Unemployment",
+      icon: "PiggyBank",
+      color: "blue",
+      keywords: ["save", "money", "budget", "finances", "tips"]
+    },
+    {
+      id: "start-business",
+      title: "Start a business",
+      description: "Resources and support for starting your own business",
+      section: "Unemployment",
+      url: "https://www.ibbventures.de/de/news/impact-funding-map",
+      icon: "Building2",
+      color: "green",
+      keywords: ["business", "startup", "entrepreneur", "company", "grants"]
+    },
+    {
+      id: "get-money",
+      title: "Get money",
+      description: "Financial support and assistance programs",
+      section: "Unemployment",
+      icon: "Banknote",
+      color: "yellow",
+      keywords: ["money", "financial", "support", "assistance", "benefits"]
+    },
+    // Language classes
+    {
+      id: "offene-tur",
+      title: "Offene Tur",
+      description: "25 Euro per month",
+      section: "Language Classes",
+      url: "https://offenetuer.net/de",
+      keywords: ["german", "cheap", "affordable", "language"]
+    },
+    {
+      id: "kub",
+      title: "KUB",
+      description: "Free",
+      section: "Language Classes",
+      url: "https://kub-berlin.org/en/",
+      keywords: ["german", "free", "language"]
+    },
+    // Gender violence
+    {
+      id: "short-term-funds",
+      title: "Short term funds and housing",
+      description: "Emergency financial assistance and temporary housing",
+      section: "Gender Violence and Divorce",
+      url: "short-term-funds",
+      keywords: ["emergency", "housing", "funds", "temporary", "help"]
+    },
+    {
+      id: "frauenraum",
+      title: "Frauenraum",
+      description: "Support services for women",
+      section: "Short term funds and housing",
+      url: "https://www.frauenraum.de/",
+      keywords: ["women", "support", "help", "services"]
+    },
+    // Communities sub-links
+    {
+      id: "sports",
+      title: "Sports",
+      description: "Sports clubs and athletic communities",
+      section: "Communities",
+      url: "sports",
+      keywords: ["sports", "athletic", "clubs", "fitness", "exercise"]
+    },
+    {
+      id: "parenthood",
+      title: "Parenthood",
+      description: "Parenting groups and family support",
+      section: "Communities",
+      url: "parenthood",
+      keywords: ["parenting", "parents", "family", "support", "groups"]
+    },
+    {
+      id: "arts-culture",
+      title: "Arts and Culture",
+      description: "Cultural groups and artistic communities",
+      section: "Communities",
+      url: "arts-culture",
+      keywords: ["arts", "culture", "artistic", "creative", "cultural"]
+    },
+    // Family and kids
+    {
+      id: "himbeer",
+      title: "Himbeer Magazine weekly activity guide",
+      description: "Weekly activities and events for families",
+      section: "Family and Kids",
+      url: "https://berlinmitkind.de/",
+      keywords: ["activities", "events", "families", "weekly", "guide"]
+    },
+    {
+      id: "black-parents",
+      title: "Black Parents Germany",
+      description: "Community and support for Black parents",
+      section: "Family and Kids",
+      url: "https://www.blackparents.de",
+      keywords: ["black", "parents", "community", "support", "germany"]
+    }
+  ];
+
+  const { query, setQuery, results, hasQuery } = useSearch(searchableItems);
 
   const navigateToSection = (section: DirectorySection, direction: "left" | "right" = "left") => {
     if (isAnimating) return;
@@ -200,6 +418,87 @@ export default function BerlinDirectory() {
     }
   };
 
+  const handleSearchResultClick = (item: SearchableItem) => {
+    // Clear search first
+    setQuery("");
+
+    // Navigate based on item ID
+    if (item.id === "berliner") {
+      navigateToSection("berliner", "left");
+    } else if (item.id === "new-here") {
+      navigateToSection("new-here", "left");
+    } else if (item.url === "house-registration-checklist") {
+      navigateToSection("house-registration", "left");
+    } else if (item.url === "gender-violence") {
+      navigateToSection("gender-violence", "left");
+    } else if (item.url === "short-term-funds") {
+      navigateToSection("short-term-funds", "left");
+    } else if (item.url === "language-classes") {
+      navigateToSection("language-classes", "left");
+    } else if (item.url === "communities") {
+      navigateToSection("communities", "left");
+    } else if (item.url === "sports") {
+      navigateToSection("sports", "left");
+    } else if (item.url === "parenthood") {
+      navigateToSection("parenthood", "left");
+    } else if (item.url === "arts-culture") {
+      navigateToSection("arts-culture", "left");
+    } else if (item.url === "family-kids") {
+      navigateToSection("family-kids", "left");
+    } else if (item.url === "unemployment") {
+      navigateToSection("unemployment", "left");
+    } else if (item.url && item.url.startsWith("http")) {
+      window.open(item.url, "_blank", "noopener,noreferrer");
+    }
+  };
+
+  const renderSearchResults = () => (
+    <div className="space-y-4">
+      <div className="text-center space-y-2">
+        <h2 className="text-xl font-semibold dark:text-white">Search Results</h2>
+        <p className="text-sm text-muted-foreground dark:text-gray-400">
+          Found {results.length} result{results.length !== 1 ? 's' : ''} for &quot;{query}&quot;
+        </p>
+      </div>
+
+      <div className="space-y-2">
+        {results.map((item) => (
+          <Card
+            key={item.id}
+            className="cursor-pointer hover:bg-accent dark:hover:bg-slate-700 transition-colors dark:bg-slate-800/90 dark:border-slate-700"
+            onClick={() => handleSearchResultClick(item)}
+          >
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-3">
+                  {item.icon && item.color && (
+                    <div className="flex-shrink-0">
+                      {getIconComponent(item.icon, item.color)}
+                    </div>
+                  )}
+                  <div className="flex-1">
+                    <h3 className={`font-medium ${item.color ? `text-${item.color}-800 dark:text-${item.color}-200` : 'dark:text-white'}`}>
+                      {item.title}
+                    </h3>
+                    {item.description && (
+                      <p className={`text-sm mt-1 ${item.color ? `text-${item.color}-700 dark:text-${item.color}-300` : 'text-muted-foreground dark:text-gray-400'}`}>
+                        {item.description}
+                      </p>
+                    )}
+                    <p className="text-xs text-muted-foreground dark:text-gray-500 mt-1">
+                      in {item.section}
+                    </p>
+                  </div>
+                </div>
+                <ExternalLink className="h-4 w-4 text-muted-foreground dark:text-gray-400" />
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+    </div>
+  );
+
   const renderMainPage = () => (
     <div className="space-y-8">
       <div className="text-center space-y-6">
@@ -211,9 +510,37 @@ export default function BerlinDirectory() {
             Find the services you need in Berlin
           </p>
         </div>
+
+        {/* Search Bar */}
+        <div className="max-w-md mx-auto">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground dark:text-gray-400" />
+            <Input
+              type="text"
+              placeholder="Search for services..."
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              className="pl-10 pr-10 dark:bg-slate-800/50 dark:border-slate-700 dark:text-white dark:placeholder-gray-400"
+            />
+            {query && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setQuery("")}
+                className="absolute right-1 top-1/2 transform -translate-y-1/2 h-8 w-8 p-0 hover:bg-transparent dark:text-gray-400 dark:hover:text-white"
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            )}
+          </div>
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+      {/* Show search results or main content */}
+      {hasQuery ? (
+        renderSearchResults()
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         <Card className="cursor-pointer hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all duration-300 hover:scale-105 hover:shadow-2xl bg-blue-100 dark:bg-blue-800/30 border-0 shadow-xl" onClick={() => navigateToSection("berliner", "left")}>
           <CardContent className="p-8">
             <div className="text-center space-y-4">
@@ -245,7 +572,8 @@ export default function BerlinDirectory() {
             </div>
           </CardContent>
         </Card>
-      </div>
+        </div>
+      )}
     </div>
   );
 
