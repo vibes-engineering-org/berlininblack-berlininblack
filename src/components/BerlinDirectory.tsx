@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { Input } from "~/components/ui/input";
-import { ArrowLeft, ExternalLink, CheckCircle2, Phone, Globe, Users, Heart, Palette, DollarSign, Shield, GraduationCap, Handshake, Baby, PiggyBank, Building2, Banknote, Search, X } from "lucide-react";
+import { ArrowLeft, ExternalLink, CheckCircle2, Phone, Globe, Users, Heart, Palette, DollarSign, Shield, GraduationCap, Handshake, Baby, PiggyBank, Building2, Banknote, Search, X, MapPin, Calendar, Languages, Shield as ShieldIcon } from "lucide-react";
 import { useSearch, type SearchableItem } from "~/hooks/useSearch";
 import LanguageDropdown from "~/components/LanguageDropdown";
 import { getTranslations, type Language } from "~/lib/translations";
@@ -720,6 +720,59 @@ export default function BerlinDirectory() {
         <h1 className="text-2xl font-bold tracking-tight dark:text-white">Short term funds and housing</h1>
         <p className="text-sm text-muted-foreground dark:text-gray-400">Emergency financial assistance and temporary housing resources</p>
       </div>
+
+      <Card className="dark:bg-slate-800/90 dark:border-slate-700">
+        <CardHeader>
+          <CardTitle className="text-lg dark:text-white">Temporäre Unterkunft für Geflüchtete</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="space-y-3">
+            <div className="flex items-start space-x-3 p-3 bg-gray-50 dark:bg-slate-700/50 rounded-lg">
+              <Calendar className="h-5 w-5 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0" />
+              <div className="flex-1">
+                <p className="font-medium dark:text-white">Weekdays</p>
+                <p className="text-sm text-muted-foreground dark:text-gray-400">
+                  Monday, Wednesday, Friday
+                </p>
+                <p className="text-xs text-orange-600 dark:text-orange-400 mt-1">
+                  This service does not happen every week.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-start space-x-3 p-3 bg-gray-50 dark:bg-slate-700/50 rounded-lg">
+              <MapPin className="h-5 w-5 text-green-600 dark:text-green-400 mt-0.5 flex-shrink-0" />
+              <div className="flex-1">
+                <p className="font-medium dark:text-white">Locations</p>
+                <p className="text-sm text-muted-foreground dark:text-gray-400">
+                  Oranienstr. 159<br />
+                  10969 Berlin
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-start space-x-3 p-3 bg-gray-50 dark:bg-slate-700/50 rounded-lg">
+              <Languages className="h-5 w-5 text-purple-600 dark:text-purple-400 mt-0.5 flex-shrink-0" />
+              <div className="flex-1">
+                <p className="font-medium dark:text-white">Languages</p>
+                <p className="text-sm text-muted-foreground dark:text-gray-400">
+                  German, English, French
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-start space-x-3 p-3 bg-gray-50 dark:bg-slate-700/50 rounded-lg">
+              <ShieldIcon className="h-5 w-5 text-green-600 dark:text-green-400 mt-0.5 flex-shrink-0" />
+              <div className="flex-1">
+                <p className="font-medium dark:text-white">Accessibility</p>
+                <p className="text-sm text-muted-foreground dark:text-gray-400">
+                  Without membership, Without papers, For free / donation
+                </p>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
       <Card className="dark:bg-slate-800/90 dark:border-slate-700">
         <CardHeader>
