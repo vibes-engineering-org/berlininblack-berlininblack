@@ -518,9 +518,6 @@ export default function BerlinDirectory() {
           <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-gray-900 dark:text-white">
             {t.title}
           </h1>
-          <p className="text-xl text-gray-700 dark:text-gray-300 max-w-2xl mx-auto leading-relaxed">
-            {t.subtitle}
-          </p>
         </div>
 
         {/* Search Bar */}

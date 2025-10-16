@@ -2,7 +2,7 @@ export const translations = {
   en: {
     title: "Berlin Services Directory",
     subtitle: "Find the services you need in Berlin",
-    searchPlaceholder: "Search for services...",
+    searchPlaceholder: "Find the services you need",
     searchResults: "Search Results",
     foundResults: "Found",
     result: "result",
@@ -94,7 +94,7 @@ export const translations = {
   de: {
     title: "Berlin Services Verzeichnis",
     subtitle: "Finden Sie die Dienste, die Sie in Berlin benötigen",
-    searchPlaceholder: "Nach Diensten suchen...",
+    searchPlaceholder: "Finden Sie die Dienste, die Sie benötigen",
     searchResults: "Suchergebnisse",
     foundResults: "Gefunden",
     result: "Ergebnis",
